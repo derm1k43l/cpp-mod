@@ -1,6 +1,6 @@
-CC = c++ -Wall -Wextra -Werror -std=c++17
+CC = c++ -Wall -Wextra -Werror -std=c++17 -g
 
-NAME = Phonebook
+NAME = phonebook
 
 SRCS = PhoneBook.cpp Contact.cpp main.cpp
 OBJDIR = obj
@@ -15,11 +15,11 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "$(GREEN)Linking object files$(NC)"
-	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME)
 
 $(OBJDIR)/%.o: %.cpp | $(OBJDIR)
 	@echo "$(GREEN)Compiling $<$(NC)"
-	$(CC) $(FLAGS) -c $< -o $@
+	$(CC) -c $< -o $@
 
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)
@@ -27,6 +27,7 @@ $(OBJDIR):
 clean:
 	@echo "$(RED)Cleaning up$(NC)"
 	rm -rf $(OBJDIR)
+	rm -rf *.dSYM
 
 fclean: clean
 	@echo "$(RED)Force cleaning$(NC)"

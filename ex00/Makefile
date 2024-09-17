@@ -15,11 +15,11 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "$(GREEN)Linking object files$(NC)"
-	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME)
 
 $(OBJDIR)/%.o: %.cpp | $(OBJDIR)
 	@echo "$(GREEN)Compiling $<$(NC)"
-	$(CC) $(FLAGS) -c $< -o $@
+	$(CC) -c $< -o $@
 
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)

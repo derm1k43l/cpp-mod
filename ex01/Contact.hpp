@@ -6,7 +6,7 @@
 /*   By: mrusu <mrusu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:25:32 by mrusu             #+#    #+#             */
-/*   Updated: 2024/09/04 12:00:58 by mrusu            ###   ########.fr       */
+/*   Updated: 2024/09/06 16:27:21 by mrusu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,22 @@
 
 #include <string>
 
+
+// Definition of the class "Contact", representing a contact in a phonebook
 class Contact 
 {
 	public:
 		Contact();
-		Contact(
-				const std::string& firstName,
-				const std::string& lastName,
-				const std::string& nickname,
-				const std::string& phonenumber,
-				const std::string& darkestSecret);
 		~Contact();
-	// set functions 
+
+	// set functions (modify the state of the object) 
 		void setFirstName(const std::string& firstName);
 		void setLastName(const std::string& lastName);
 		void setNickname(const std::string& nickname);
-		void setPhoneNumber(const std::string& phonenumber);
+		void setPhoneNumber(const std::string& phoneNumber);
 		void setDarkestSecret(const std::string& darkestSecret);
 
-	// get functions
+	// get functions (do not modify the state of the object)
 		std::string getFirstName() const;
 		std::string getLastName() const;
 		std::string getNickname() const;
@@ -44,7 +41,7 @@ class Contact
 		std::string firstName_;
 		std::string lastName_;
 		std::string nickname_;
-		std::string phonenumber_;
+		std::string phoneNumber_;
 		std::string darkestSecret_;
 };
 

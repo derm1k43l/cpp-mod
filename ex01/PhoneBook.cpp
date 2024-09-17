@@ -6,7 +6,7 @@
 /*   By: mrusu <mrusu@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:25:37 by mrusu             #+#    #+#             */
-/*   Updated: 2024/09/04 15:38:17 by mrusu            ###   ########.fr       */
+/*   Updated: 2024/09/06 16:22:48 by mrusu            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,42 +26,11 @@ PhoneBook::~PhoneBook()
 void PhoneBook::addContact()
 {
 	Contact newContact;
-	std::string input;
-
-	std::cout << "Enter First Name: ";
-	std::getline(std::cin, input);
-	if (input.empty())
-	{
-		std::cout << "Field can not be empty." << std::endl;
-		return ;
-	}
-	newContact.setFirstName(input);
-
-	std::cout << "Enter Last Name: ";
-	std::getline(std::cin, input);
-	if (input.empty())
-	{
-		std::cout << "Field can not be empty." << std::endl;
-		return ;
-	}
-	newContact.setLastName(input);
-
-	std::cout << "Enter Nickname: ";
-	std::getline(std::cin, input);
-		if (input.empty())
-	{
-		std::cout << "Field can not be empty." << std::endl;
-		return ;
-	}
-	newContact.setNickname(input);
-
-	std::cout << "Enter Phone Number: ";
-	std::getline(std::cin, input);
-	newContact.setPhoneNumber(input);
-
-	std::cout << "Enter Darkest Secret: ";
-	std::getline(std::cin, input);
-	newContact.setDarkestSecret(input);
+	newContact.setFirstName(getDetails("Enter first name: "));
+	newContact.setLastName(getDetails("Enter last name: "));
+	newContact.setNickname(getDetails("Enter nickname: "));
+	newContact.setPhoneNumber(getDetails("Enter phone number: "));
+	newContact.setDarkestSecret(getDetails("Enter darkest secret: "));
 	
 	contacts_[currentIndex_] = newContact;
 	currentIndex_ = (currentIndex_ + 1) % 8;
@@ -70,8 +39,9 @@ void PhoneBook::addContact()
 // Search for a contact in the phonebook
 void PhoneBook::searchContact() const
 {
-	std::cout << "|Index     |First Name|Last Name |Nickname  |" << std::endl;
-	std::cout << "---------------------------------------------" << std::endl;
+	std::cout << "---------------------------------------------\n";
+	std::cout << "|     Index|First Name| Last Name|  Nickname|\n";
+	std::cout << "---------------------------------------------\n";
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -84,17 +54,25 @@ void PhoneBook::searchContact() const
 					<< "|" << std::endl;
 		}
 	}
+	std::cout << "---------------------------------------------\n";
 
 	int index;
 	std::string input;
 	
 	std::cout << "Enter the index of the contact you want to view in detail: ";
 	std::getline(std::cin, input);
-	
-	if (input.empty() || !std::isdigit(input[0]) || (index = std::stoi(input)) < 1 || index > 8)
+ 	try
 	{
-		std::cout << "Invalid index!" << std::endl;
-		return ;
+    	if (input.empty() || !std::isdigit(input[0]))
+        	throw std::invalid_argument("Invalid input!");
+		index = std::stoi(input);
+		if (index < 1 || index > 8)
+			throw std::out_of_range("Index out of range!");
+	}
+	catch (const std::exception&)
+	{
+		std::cout << "Invalid index!\n";
+		return;
 	}
 
 	if (index >= 1 && index <= 8 && !contacts_[index - 1].getFirstName().empty())
@@ -106,7 +84,7 @@ void PhoneBook::searchContact() const
 		std::cout << "Darkest Secret: " << contacts_[index - 1].getDarkestSecret() << std::endl;
 	}
 	else
-		std::cout << "Invalid index!" << std::endl;
+		std::cout << "Invalid index!\n";
 }
 
 
@@ -122,11 +100,19 @@ std::string PhoneBook::getDetails(const std::string &str)
 {
 	std::string input;
 	std::cout << str;
-	std::getline(std::cin, input);
+	if (!std::getline(std::cin, input))
+	{
+		std::cout << "EXIT because EOF.\n";
+		std::exit(0);
+	}
 	while (input.empty())
 	{
 		std::cout << "Field can not be empty. " << str;
-		std::getline(std::cin, input);
+		if(!std::getline(std::cin, input))
+		{
+			std::cout << "EXIT because EOF.\n";
+			std::exit(0);
+		}
 	}
 	return (input);
 }
